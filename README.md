@@ -26,7 +26,6 @@ The codebase is highly modular, separating the game state, board mechanics, and 
 * **Pathfinding & Win Detection:** The logic to check if a player has won relies on a custom **Breadth-First Search (BFS)** algorithm. It utilizes a `visited` matrix and a custom `Node` queue to efficiently traverse the network of connected pegs and verify if a path reaches the opposite end of the board.
 * **Geometric Edge Intersection:** Implements advanced mathematical orientation (cross-product calculation) to verify line segments. When a player places a peg, the program calculates all possible knight-moves and strictly rejects any links that would cross an existing edge.
 * **Memory Optimization:** Built with strict space and time complexity considerations, ensuring no wasted memory storage. Edges are stored in a contiguous array rather than complex graphs.
-* **Custom Data Structures:** Utilizes custom `structs` and `enums` (such as `gast` for the game state, `connection` for line segments, and `state` for board occupancy) to cleanly represent the game environment.
 
 ---
 
