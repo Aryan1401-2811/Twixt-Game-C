@@ -2,7 +2,7 @@
 
 A complete Command Line Interface (CLI) implementation of the classic strategy board game **Twixt**, written entirely in C. 
 
-The game involves two players (Red and Black) taking turns placing pegs and links on a grid. The objective is to create a continuous connected path of your color from one side of the board to the other (top-to-bottom for one player, left-to-right for the other) before your opponent does.
+The game involves two players (Red and Black) taking turns placing pegs and links on a 24x24 grid. The objective is to create a continuous connected path of your color from one side of the board to the other (left-to-right for Red, top-to-bottom for Black) before your opponent does.
 
 ###  Learn to Play
 * **Rules of the game:** [Watch the tutorial here](https://youtu.be/dIyuVS3xRQ0?si=_qYFqihhfrxKRBRq)
@@ -14,34 +14,35 @@ The game involves two players (Red and Black) taking turns placing pegs and link
 
 The codebase is highly modular, separating the game state, board mechanics, and core execution into distinct files to optimize memory storage and execution time.
 
-* **`main.c`**: The entry point of the program. Handles the main game loop, initializing the board, and invoking the CLI interface.
-* **`game.c` & `game.h`**: Contains the core game flow logic. This manages alternating turns between the Red and Black players, processing player inputs, and coordinating the overall game state.
-* **`board.c` & `board.h`**: Manages the underlying data structures for the grid. It handles storing the board state, validating if two pins can be connected, and executing the pathfinding logic.
+* **`main.c`**: The entry point of the program. Handles the main game loop, CLI command parsing (`r c` for moves, `help`, `quit`), and turn alternation between Red and Black players.
+* **`game.c` & `game.h`**: Contains the core game mathematics and state logic. This manages the automatic generation of knight-move connections, the geometric math to ensure edges do not intersect, and the pathfinding algorithm to determine a winner.
+* **`board.c` & `board.h`**: Manages the underlying 24x24 grid. It handles storing the board state, rendering the grid to the terminal, and validating moves (e.g., preventing peg placement in corners or restricted enemy end-rows).
 * **`Makefile`**: Automates the compilation process, linking the `.c` files and their respective `.o` object files into the final executable.
 
 ---
 
 ##  Technical Highlights
 
-* **Pathfinding & Win Detection:** The logic to check if a player has won relies on advanced traversal algorithms. It utilizes either recursion or 2D Dynamic Programming (DP) to efficiently check for continuous connected paths across the grid (e.g., verifying if a valid path of pins exists from the top row to a specific coordinate `(i, j)`).
-* **Memory Optimization:** Built with strict space and time complexity considerations, ensuring no wasted memory storage during runtime.
-* **Custom Data Structures:** Utilizes custom `structs` and `enums` to cleanly represent piece types, connection validity, and coordinate systems.
+* **Pathfinding & Win Detection:** The logic to check if a player has won relies on a custom **Breadth-First Search (BFS)** algorithm. It utilizes a `visited` matrix and a custom `Node` queue to efficiently traverse the network of connected pegs and verify if a path reaches the opposite end of the board.
+* **Geometric Edge Intersection:** Implements advanced mathematical orientation (cross-product calculation) to verify line segments. When a player places a peg, the program calculates all possible knight-moves and strictly rejects any links that would cross an existing edge.
+* **Memory Optimization:** Built with strict space and time complexity considerations, ensuring no wasted memory storage. Edges are stored in a contiguous array rather than complex graphs.
+* **Custom Data Structures:** Utilizes custom `structs` and `enums` (such as `gast` for the game state, `connection` for line segments, and `state` for board occupancy) to cleanly represent the game environment.
 
 ---
 
 ##  How to Build and Run
 
-For Mac/Linux :
-compile using : make
-(press enter/return)
-run using : ./a.out
-(press enter/return)
-for recompilation use: make clean
-(and then enter)
+**For Mac/Linux:**
+compile using : `make`
+*(press enter/return)*
+run using : `./a.out`
+*(press enter/return)*
+for recompilation use: `make clean`
+*(and then enter)*
 
-For Windows:
-compile using : mingw32-make
-(then enter)
-run using : ./a.out.exe or a.out.exe
-(press enter)
-for recompilation : mingw32-make clean
+**For Windows:**
+compile using : `mingw32-make`
+*(then enter)*
+run using : `./a.out.exe` or `a.out.exe`
+*(press enter)*
+for recompilation : `mingw32-make clean`
